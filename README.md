@@ -1,6 +1,6 @@
-# 🎓 NIET Campus Placement Management System
+# 🎓 EATM Campus Placement Management System
 
-A premium, state-of-the-art web application and backend management system designed for **Noida Institute of Engineering & Technology (NIET), Greater Noida**. 
+A premium, state-of-the-art web application and backend management system designed for **EATM College**.
 
 This system connects a rich, dynamic frontend dashboard to a robust Python data structure backend, enabling seamless administration of student registrations, company recruiters, placement drives, interview coordination, job offers, and real-time statistics.
 
@@ -10,7 +10,7 @@ Live Demo: [http://phoeenixxd.pythonanywhere.com](http://phoeenixxd.pythonanywhe
 
 ## ✨ Key Features
 
-- **📊 Comprehensive Dashboard**: Real-time stats showing placement rates, highest/average packages, recruiter counts, and top placement highlights from NIET.
+- **📊 Comprehensive Dashboard**: Real-time stats showing placement rates, highest/average packages, recruiter counts, and top placement highlights from EATM College.
 - **👨‍🎓 Student Management**: Add, search, and view student records (sorted dynamically by CGPA). Supports recursive searching algorithms.
 - **🏢 Company Management**: Register recruiting organizations, track job roles, minimum CGPA eligibility criteria, and salary packages.
 - **📅 Placement Drive Scheduler**: Create and track company-specific placement drives.
@@ -46,8 +46,8 @@ Ensure you have **Python 3.10+** installed on your system.
 
 1. **Clone the repository**:
    ```bash
-   git clone git@github.com:Divyansh-Kashiv07/NIET-Campus-Placement-System.git
-   cd NIET-Campus-Placement-System
+   git clone https://github.com/Somajitkhatua/EATM-Campus-Placement-System.git
+   cd EATM-Campus-Placement-System
    ```
 
 2. **Set up a virtual environment**:
@@ -98,4 +98,4 @@ Ensure you have **Python 3.10+** installed on your system.
 
 ## 📄 License
 
-This project is created as part of the NIET Python Workshop. Licensed under the MIT License.
+This project is created as part of the EATM College Python Workshop. Licensed under the MIT License.
