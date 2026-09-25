@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+venv/
+.env
+student_report.csv
+.gemini/

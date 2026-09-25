@@ -1,0 +1,562 @@
+{
+    "students": {
+        "S001": {
+            "person_id": "P001",
+            "name": "Sumit Pathak",
+            "email": "sumit.pathak@niet.co.in",
+            "contact_number": "9876543201",
+            "student_id": "S001",
+            "branch": "CSE",
+            "cgpa": 9.2,
+            "skills": [
+                "React",
+                "Python",
+                "Node.js"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S002": {
+            "person_id": "P002",
+            "name": "Vanshika Pandey",
+            "email": "vanshika.p@niet.co.in",
+            "contact_number": "9876543202",
+            "student_id": "S002",
+            "branch": "CSE",
+            "cgpa": 9.0,
+            "skills": [
+                "Java",
+                "Spring Boot",
+                "SQL"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S003": {
+            "person_id": "P003",
+            "name": "Varun Gupta",
+            "email": "varun.gupta@niet.co.in",
+            "contact_number": "9876543203",
+            "student_id": "S003",
+            "branch": "CSE (AI & ML)",
+            "cgpa": 8.8,
+            "skills": [
+                "TensorFlow",
+                "ML",
+                "Python"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S004": {
+            "person_id": "P004",
+            "name": "Aditya Singh",
+            "email": "aditya.singh@niet.co.in",
+            "contact_number": "9876543204",
+            "student_id": "S004",
+            "branch": "CSE (DS)",
+            "cgpa": 8.6,
+            "skills": [
+                "Data Science",
+                "Pandas",
+                "R"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S005": {
+            "person_id": "P005",
+            "name": "Himanshu Pandey",
+            "email": "himanshu.p@niet.co.in",
+            "contact_number": "9876543205",
+            "student_id": "S005",
+            "branch": "CSE (AI)",
+            "cgpa": 8.5,
+            "skills": [
+                "PyTorch",
+                "NLP",
+                "AI"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S006": {
+            "person_id": "P006",
+            "name": "Anmol Srivastava",
+            "email": "anmol.s@niet.co.in",
+            "contact_number": "9876543206",
+            "student_id": "S006",
+            "branch": "CSE",
+            "cgpa": 8.4,
+            "skills": [
+                "Java",
+                "System Design",
+                "DSA"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S007": {
+            "person_id": "P007",
+            "name": "Ayush Mani",
+            "email": "ayush.mani@niet.co.in",
+            "contact_number": "9876543207",
+            "student_id": "S007",
+            "branch": "CSE (AI & ML)",
+            "cgpa": 8.7,
+            "skills": [
+                "Deep Learning",
+                "ML",
+                "AWS"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S008": {
+            "person_id": "P008",
+            "name": "Onkar Jha",
+            "email": "onkar.jha@niet.co.in",
+            "contact_number": "9876543208",
+            "student_id": "S008",
+            "branch": "ECE",
+            "cgpa": 8.3,
+            "skills": [
+                "VLSI",
+                "C++",
+                "Embedded"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S009": {
+            "person_id": "P009",
+            "name": "Ankush Chauhan",
+            "email": "ankush.c@niet.co.in",
+            "contact_number": "9876543209",
+            "student_id": "S009",
+            "branch": "CSE (AI & ML)",
+            "cgpa": 8.1,
+            "skills": [
+                "Docker",
+                "Flask",
+                "Python"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S010": {
+            "person_id": "P010",
+            "name": "Ayush Rawat",
+            "email": "ayush.rawat@niet.co.in",
+            "contact_number": "9876543210",
+            "student_id": "S010",
+            "branch": "CSE (AIML)",
+            "cgpa": 7.9,
+            "skills": [
+                "Express",
+                "MongoDB",
+                "React"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S011": {
+            "person_id": "P011",
+            "name": "Priya Sharma",
+            "email": "priya.sharma@niet.co.in",
+            "contact_number": "9876543211",
+            "student_id": "S011",
+            "branch": "IT",
+            "cgpa": 8.0,
+            "skills": [
+                "TypeScript",
+                "Angular",
+                "SQL"
+            ],
+            "placement_status": "Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S012": {
+            "person_id": "P012",
+            "name": "Rohit Verma",
+            "email": "rohit.verma@niet.co.in",
+            "contact_number": "9876543212",
+            "student_id": "S012",
+            "branch": "CSE",
+            "cgpa": 7.6,
+            "skills": [
+                "Java",
+                "C++",
+                "Algorithms"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "STEST": {
+            "person_id": "PTEST",
+            "name": "Test Student",
+            "email": "test@example.com",
+            "contact_number": "9876543210",
+            "student_id": "STEST",
+            "branch": "CSE",
+            "cgpa": 9.8,
+            "skills": [
+                "Python",
+                "SQL"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "S999": {
+            "person_id": "P999",
+            "name": "Playwright Test",
+            "email": "playwright@example.com",
+            "contact_number": "9999999999",
+            "student_id": "S999",
+            "branch": "CSE",
+            "cgpa": 9.7,
+            "skills": [
+                "Java",
+                "Python"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "SUIX": {
+            "person_id": "PUIX",
+            "name": "UIX User",
+            "email": "uix@example.com",
+            "contact_number": "9876543211",
+            "student_id": "SUIX",
+            "branch": "CSE",
+            "cgpa": 9.1,
+            "skills": [
+                "Python",
+                "SQL"
+            ],
+            "placement_status": "Not Placed",
+            "password": "",
+            "applied_companies": [],
+            "application_statuses": {}
+        },
+        "654": {
+            "person_id": "9874",
+            "name": "somajit",
+            "email": "somajit@16",
+            "contact_number": "9874563321",
+            "student_id": "654",
+            "branch": "CSE",
+            "cgpa": 9.0,
+            "skills": [
+                "python",
+                "java"
+            ],
+            "placement_status": "Not Placed",
+            "password": "scrypt:32768:8:1$Cc48ZEI3cTq4CLO5$583173fdf32d37d44a204a89e72906c791b2e5130701ecc025803d34be83429c109c4540c9a87f5abccce31c2d0199b6b804422e6b65b01b4136a502e8cd086a",
+            "applied_companies": [
+                "C001",
+                "C002"
+            ],
+            "application_statuses": {
+                "C001": "Selected",
+                "C002": "Interview"
+            }
+        }
+    },
+    "companies": {
+        "C001": {
+            "company_id": "C001",
+            "company_name": "Autodesk",
+            "package": 39.0,
+            "eligibility_cgpa": 8.0,
+            "job_role": "Software Engineer"
+        },
+        "C002": {
+            "company_id": "C002",
+            "company_name": "AMD",
+            "package": 30.0,
+            "eligibility_cgpa": 8.0,
+            "job_role": "SoC Design Engineer"
+        },
+        "C003": {
+            "company_id": "C003",
+            "company_name": "Juspay",
+            "package": 27.0,
+            "eligibility_cgpa": 7.5,
+            "job_role": "Full Stack Developer"
+        },
+        "C004": {
+            "company_id": "C004",
+            "company_name": "Atlan",
+            "package": 20.0,
+            "eligibility_cgpa": 7.5,
+            "job_role": "Backend Engineer"
+        },
+        "C005": {
+            "company_id": "C005",
+            "company_name": "JP Morgan Chase",
+            "package": 19.75,
+            "eligibility_cgpa": 7.0,
+            "job_role": "Technology Analyst"
+        },
+        "C006": {
+            "company_id": "C006",
+            "company_name": "NatWest",
+            "package": 12.0,
+            "eligibility_cgpa": 7.0,
+            "job_role": "Software Developer"
+        },
+        "C007": {
+            "company_id": "C007",
+            "company_name": "TCS",
+            "package": 7.0,
+            "eligibility_cgpa": 8.0,
+            "job_role": "Systems Engineer"
+        },
+        "C008": {
+            "company_id": "C008",
+            "company_name": "Cognizant",
+            "package": 3.0,
+            "eligibility_cgpa": 6.0,
+            "job_role": "Programmer Analyst"
+        }
+    },
+    "admins": {
+        "ADM998": {
+            "person_id": "A998",
+            "name": "Admin API User",
+            "email": "api.admin@example.com",
+            "contact_number": "9988776655",
+            "admin_id": "ADM998",
+            "username": "api_admin",
+            "password": "secret123",
+            "designation": "Placement Coordinator"
+        },
+        "987456321": {
+            "person_id": "2301322216",
+            "name": "Somajit Khatua",
+            "email": "somajit@gmail.com",
+            "contact_number": "9856321478",
+            "admin_id": "987456321",
+            "username": "raja@16",
+            "password": "Raja@16",
+            "designation": "Placement Coordinator"
+        },
+        "12345": {
+            "person_id": "1234",
+            "name": "Sk",
+            "email": "sk@gmail.com",
+            "contact_number": "845697145",
+            "admin_id": "12345",
+            "username": "654",
+            "password": "scrypt:32768:8:1$fJg2suSDB75k55d2$02a4dfdb15af6a2b9578df629276d35f553471bcee08e3264c0dc4b9122f3884557fb71105b2724a94870d7731c6ff446b4c8d6c837266e2e6b22772d81b671e",
+            "designation": "Placement 142Coordinator"
+        }
+    },
+    "drives": [
+        {
+            "drive_id": "D001",
+            "company": "C001",
+            "drive_date": "2025-09-15",
+            "eligible_students": [
+                "654"
+            ],
+            "application_statuses": {
+                "654": "Interview"
+            }
+        },
+        {
+            "drive_id": "D002",
+            "company": "C002",
+            "drive_date": "2025-10-02",
+            "eligible_students": [
+                "654"
+            ],
+            "application_statuses": {
+                "654": "Screening"
+            }
+        },
+        {
+            "drive_id": "D003",
+            "company": "C003",
+            "drive_date": "2025-10-20",
+            "eligible_students": [
+                "654"
+            ],
+            "application_statuses": {
+                "654": "Applied"
+            }
+        },
+        {
+            "drive_id": "D004",
+            "company": "C005",
+            "drive_date": "2025-11-08",
+            "eligible_students": [
+                "654"
+            ],
+            "application_statuses": {
+                "654": "Applied"
+            }
+        },
+        {
+            "drive_id": "D005",
+            "company": "C007",
+            "drive_date": "2025-12-01",
+            "eligible_students": [],
+            "application_statuses": {}
+        }
+    ],
+    "interviews": [
+        {
+            "interview_id": "I001",
+            "student": "S001",
+            "company": "C001",
+            "interview_date": "2025-09-20",
+            "status": "Scheduled",
+            "student_name": "Sumit Pathak",
+            "company_name": "Autodesk"
+        },
+        {
+            "interview_id": "I002",
+            "student": "S003",
+            "company": "C001",
+            "interview_date": "2025-09-16",
+            "status": "Scheduled",
+            "student_name": "Varun Gupta",
+            "company_name": "Autodesk"
+        },
+        {
+            "interview_id": "I003",
+            "student": "S002",
+            "company": "C002",
+            "interview_date": "2025-10-03",
+            "status": "Scheduled",
+            "student_name": "Vanshika Pandey",
+            "company_name": "AMD"
+        },
+        {
+            "interview_id": "I004",
+            "student": "S007",
+            "company": "C003",
+            "interview_date": "2025-10-21",
+            "status": "Scheduled",
+            "student_name": "Ayush Mani",
+            "company_name": "Juspay"
+        },
+        {
+            "interview_id": "I005",
+            "student": "S006",
+            "company": "C005",
+            "interview_date": "2025-11-09",
+            "status": "Scheduled",
+            "student_name": "Anmol Srivastava",
+            "company_name": "JP Morgan Chase"
+        },
+        {
+            "interview_id": "I006",
+            "student": "S010",
+            "company": "C006",
+            "interview_date": "2025-11-10",
+            "status": "Scheduled",
+            "student_name": "Ayush Rawat",
+            "company_name": "NatWest"
+        },
+        {
+            "interview_id": "I007",
+            "student": "S011",
+            "company": "C007",
+            "interview_date": "2025-12-02",
+            "status": "Scheduled",
+            "student_name": "Priya Sharma",
+            "company_name": "TCS"
+        },
+        {
+            "interview_id": "I008",
+            "student": "S009",
+            "company": "C003",
+            "interview_date": "2025-10-21",
+            "status": "Scheduled",
+            "student_name": "Ankush Chauhan",
+            "company_name": "Juspay"
+        }
+    ],
+    "offers": [
+        {
+            "offer_id": "O001",
+            "student": "S001",
+            "company": "C001",
+            "package": 39.0,
+            "offer_status": "Pending"
+        },
+        {
+            "offer_id": "O002",
+            "student": "S003",
+            "company": "C001",
+            "package": 39.0,
+            "offer_status": "Pending"
+        },
+        {
+            "offer_id": "O003",
+            "student": "S002",
+            "company": "C002",
+            "package": 30.0,
+            "offer_status": "Pending"
+        },
+        {
+            "offer_id": "O004",
+            "student": "S007",
+            "company": "C003",
+            "package": 27.0,
+            "offer_status": "Pending"
+        },
+        {
+            "offer_id": "O005",
+            "student": "S006",
+            "company": "C005",
+            "package": 19.75,
+            "offer_status": "Pending"
+        },
+        {
+            "offer_id": "O006",
+            "student": "S010",
+            "company": "C006",
+            "package": 12.0,
+            "offer_status": "Pending"
+        },
+        {
+            "offer_id": "O007",
+            "student": "S011",
+            "company": "C007",
+            "package": 7.0,
+            "offer_status": "Pending"
+        }
+    ]
+}
