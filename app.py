@@ -10,8 +10,11 @@ Each API endpoint maps to a CampusPlacementSystem method.
 """
 
 from functools import wraps
+from io import BytesIO
 from flask import Flask, render_template, request, jsonify, session
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
+from pypdf import PdfReader
 from system import CampusPlacementSystem
 from utils import (
     InvalidStudentID, InvalidCompanyID,
@@ -24,6 +27,7 @@ app = Flask(__name__)
 app.secret_key = 'niet-placement-system-local-secret'
 
 APPLICATION_STATUSES = ('Applied', 'Screening', 'Interview', 'Selected', 'Rejected', 'Withdrawn')
+MAX_RESUME_BYTES = 5 * 1024 * 1024
 
 # Create a single instance of the placement system
 # This is shared across all API requests
@@ -69,6 +73,7 @@ def student_or_admin(view):
 def public_student(student):
     data = student.to_dict()
     data.pop('password', None)
+    data['suggested_companies'] = suggest_companies_for_student(student)
     return data
 
 
@@ -103,6 +108,71 @@ def password_matches(stored_password, supplied_password):
     if stored_password.startswith(('scrypt:', 'pbkdf2:')):
         return check_password_hash(stored_password, supplied_password)
     return stored_password == supplied_password
+
+
+def normalize_list(value):
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [item.strip() for item in value.split(',') if item.strip()]
+    if isinstance(value, (list, set, tuple)):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return []
+
+
+def extract_resume_text(uploaded_file):
+    filename = secure_filename(uploaded_file.filename or '')
+    extension = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
+    if extension not in ('pdf', 'txt'):
+        raise ValueError('Upload a PDF or TXT resume.')
+
+    content = uploaded_file.read(MAX_RESUME_BYTES + 1)
+    if len(content) > MAX_RESUME_BYTES:
+        raise ValueError('Resume must be 5 MB or smaller.')
+
+    if extension == 'txt':
+        resume_text = content.decode('utf-8-sig', errors='replace')
+    else:
+        try:
+            reader = PdfReader(BytesIO(content), strict=False)
+            if reader.is_encrypted and not reader.decrypt(''):
+                raise ValueError('This PDF is password-protected.')
+            resume_text = '\n'.join(page.extract_text() or '' for page in reader.pages)
+        except ValueError:
+            raise
+        except Exception as error:
+            raise ValueError('Unable to read this PDF. Upload a text-based PDF or TXT resume.') from error
+        if not resume_text.strip():
+            raise ValueError('No readable text was found in this PDF. Upload a text-based PDF or TXT resume.')
+
+    if not resume_text.strip():
+        raise ValueError('The resume file is empty.')
+    return filename, resume_text[:100_000]
+
+
+def suggest_companies_for_student(student):
+    keywords = set()
+    keywords.update(normalize_list(student.skills))
+    keywords.update(normalize_list(student.languages))
+    if getattr(student, 'resume_text', ''):
+        keywords.update({word.lower() for word in str(student.resume_text).replace(',', ' ').replace('.', ' ').split() if len(word) > 3})
+    keywords = {k.lower() for k in keywords}
+
+    suggestions = []
+    for company in cps.companies.values():
+        text = f"{company.company_name} {company.job_role}".lower()
+        if not keywords or any(keyword in text for keyword in keywords):
+            suggestions.append({
+                "company_id": company.company_id,
+                "company_name": company.company_name,
+                "job_role": company.job_role,
+                "package": company.package,
+                "eligibility_cgpa": company.eligibility_cgpa,
+                "eligible": student.cgpa >= company.eligibility_cgpa,
+                "has_applied": company.company_id in student.applied_companies,
+                "application_status": student.application_statuses.get(company.company_id),
+            })
+    return suggestions[:5]
 
 
 @app.route('/api/auth/me', methods=['GET'])
@@ -165,8 +235,10 @@ def auth_register_student():
     if any(not data.get(field) for field in required):
         return jsonify({"success": False, "message": "Complete all student registration fields."}), 400
     data['password'] = generate_password_hash(data.get('password', ''))
-    if isinstance(data.get('skills'), str):
-        data['skills'] = [s.strip() for s in data['skills'].split(',') if s.strip()]
+    data['skills'] = normalize_list(data.get('skills'))
+    data['languages'] = normalize_list(data.get('languages'))
+    data['resume_name'] = data.get('resume_name', '')
+    data['resume_text'] = data.get('resume_text', '')
     try:
         cps.register_student(data)
         cps.save_data()
@@ -281,7 +353,39 @@ def search_student(student_id):
     return jsonify({"success": False, "message": "Student not found"}), 404
 
 
-# ══════════════════════════════════════════════
+@app.route('/api/students/profile', methods=['POST'])
+@student_required
+def update_student_profile():
+    data = request.form if request.mimetype == 'multipart/form-data' else (request.get_json(silent=True) or {})
+    resume_file = request.files.get('resume') if request.mimetype == 'multipart/form-data' else None
+    student = cps.students.get(session.get('user_id'))
+    if not student:
+        return jsonify({"success": False, "message": "Student profile not found."}), 404
+
+    try:
+        resume_name, resume_text = extract_resume_text(resume_file) if resume_file and resume_file.filename else (None, None)
+    except ValueError as error:
+        return jsonify({"success": False, "message": str(error)}), 400
+
+    student.skills = set(normalize_list(data.get('skills', list(student.skills))))
+    student.languages = set(normalize_list(data.get('languages', list(student.languages))))
+    if resume_name is not None:
+        student.resume_name = resume_name
+        student.resume_text = resume_text
+    elif data.get('resume_name') is not None:
+        student.resume_name = str(data.get('resume_name', student.resume_name))
+        student.resume_text = str(data.get('resume_text', student.resume_text))
+
+    cps.save_data()
+    return jsonify({
+        "success": True,
+        "message": "Profile and resume updated successfully.",
+        "suggested_companies": suggest_companies_for_student(student),
+        "student": public_student(student)
+    })
+
+
+# ══════════════════════════════════════
 #  COMPANY API ENDPOINTS
 # ══════════════════════════════════════════════
 
@@ -341,6 +445,8 @@ def apply_for_placement(company_id):
         cps.apply_for_placement(session.get('user_id'), company_id)
         cps.save_data()
         return jsonify({"success": True, "message": "Placement application submitted successfully."})
+    except StudentNotEligible as e:
+        return jsonify({"success": False, "message": str(e)}), 400
     except (InvalidStudentID, InvalidCompanyID) as e:
         return jsonify({"success": False, "message": str(e)}), 404
 
@@ -418,12 +524,15 @@ def update_drive_application(drive_id, student_id):
 @student_or_admin
 def check_eligibility():
     """Check if a student meets a company's CGPA requirement"""
+    data = request.get_json(silent=True) or {}
+    student_id = session.get('user_id') if current_role() == 'student' else data.get('student_id')
+    company_id = data.get('company_id')
+    if not student_id or not company_id:
+        return jsonify({"eligible": False, "message": "Select a student and company to check eligibility."}), 400
+
     try:
-        data = request.get_json()
-        if current_role() == 'student' and data['student_id'] != session.get('user_id'):
-            return jsonify({"eligible": False, "message": "Students can check only their own eligibility."}), 403
-        result = cps.check_eligibility(data['student_id'], data['company_id'])
-        return jsonify({"eligible": True, "message": "Student is eligible! ✅"})
+        cps.check_eligibility(student_id, company_id)
+        return jsonify({"eligible": True, "message": "Student is eligible!"})
     except StudentNotEligible as e:
         return jsonify({"eligible": False, "message": str(e)})
     except (InvalidStudentID, InvalidCompanyID) as e:
@@ -455,7 +564,7 @@ def get_interviews():
 def schedule_interview():
     """Schedule a new interview between student and company"""
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True) or {}
         cps.schedule_interviews(data)
         cps.save_data()
         return jsonify({"success": True, "message": "Interview scheduled!"})

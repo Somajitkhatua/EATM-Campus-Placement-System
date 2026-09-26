@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 434" role="img" aria-label="EATM green gear logo with landscape">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2385ee"/>
+      <stop offset="1" stop-color="#a8d8ff"/>
+    </linearGradient>
+    <radialGradient id="face" cx="45%" cy="35%" r="75%">
+      <stop offset="0" stop-color="#81d600"/>
+      <stop offset="1" stop-color="#49a900"/>
+    </radialGradient>
+    <pattern id="lines" width="4" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 7.5H4" stroke="#173d09" stroke-opacity=".12"/>
+    </pattern>
+    <clipPath id="face-clip">
+      <circle cx="216" cy="198" r="146"/>
+    </clipPath>
+  </defs>
+  <rect width="434" height="434" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".9">
+    <path d="M0 118c16-17 32-17 48 0 14-13 29-11 40 3H0zm356 18c13-20 31-21 47-4 11-13 22-10 31 2v19h-78z"/>
+    <path d="M23 68c9-12 20-12 29-1 8-7 18-6 24 3H20zm332 34c8-12 20-12 29-1 9-8 18-5 24 3h-57z" opacity=".65"/>
+  </g>
+  <path d="M0 300c52-24 90-5 128 12 39-22 77-18 117 2 43-29 95-20 189 5v115H0z" fill="#85c82e"/>
+  <path d="M0 331c56-35 102-29 149-7 52-33 103-24 143-2 52-25 100-20 142 2v110H0z" fill="#328b16"/>
+  <path d="M0 390c83-20 135 13 194 3 75-13 127-25 240 3v38H0z" fill="#70b926"/>
+  <g fill="#050609">
+    <circle cx="216" cy="198" r="174"/>
+    <rect x="190" y="5" width="52" height="78" rx="4"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(30 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(60 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(90 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(120 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(150 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(180 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(210 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(240 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(270 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(300 216 198)"/>
+    <rect x="190" y="5" width="52" height="78" rx="4" transform="rotate(330 216 198)"/>
+  </g>
+  <circle cx="216" cy="198" r="146" fill="url(#face)"/>
+  <g clip-path="url(#face-clip)">
+    <path d="M62 279c41-17 79-10 113 7 40-23 88-17 132 4v70H62z" fill="#70ba20" opacity=".55"/>
+    <path d="M62 303c47-23 84-13 122 2 42-20 85-12 123 7v51H62z" fill="url(#lines)"/>
+  </g>
+  <text x="216" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="91" font-weight="700" letter-spacing="-5" fill="#f5f7f1">e<tspan fill="#d9efb6">at</tspan>m</text>
+  <path d="M165 244c15-10 29-10 43 0 12 8 23 8 35-1m-77 17c15-10 29-10 43 0 12 8 23 8 35-1" fill="none" stroke="#071006" stroke-width="8" stroke-linecap="square"/>
+  <rect x="360" y="78" width="33" height="34" rx="8" fill="#48ca57" stroke="#d9f2d4" stroke-width="3"/>
+  <text x="376.5" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#fff">2</text>
+</svg>

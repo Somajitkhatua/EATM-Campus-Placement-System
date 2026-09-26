@@ -24,16 +24,19 @@ class Person(abc.ABC): # Abstract base class representing a generic person
         return f"Person(person_id={self.person_id}, name={self.name})" # Returns detailed object info
 
 class Student(Person): # Subclass of Person representing a student
-    def __init__(self, person_id, name, email, contact_number, student_id, branch, cgpa, skills=None, placement_status="Not Placed", password="", applied_companies=None, application_statuses=None): # Constructor for Student
+    def __init__(self, person_id, name, email, contact_number, student_id, branch, cgpa, skills=None, languages=None, placement_status="Not Placed", password="", applied_companies=None, application_statuses=None, resume_name="", resume_text=""): # Constructor for Student
         super().__init__(person_id, name, email, contact_number) # Call parent constructor
         self.student_id = student_id # Unique academic identifier for the student
         self.branch = branch # Academic department or branch
         self.cgpa = float(cgpa) # Current Cumulative Grade Point Average
         self.skills = set(skills) if skills else set() # Set of skills to avoid duplicates
+        self.languages = set(languages) if languages else set() # Languages known by the student
         self.placement_status = placement_status # Current status (e.g., Placed, Not Placed)
         self.password = password # Password hash used for student authentication
         self.applied_companies = applied_companies if applied_companies else [] # Company IDs for placement applications
         self.application_statuses = application_statuses if application_statuses else {} # Progress by company ID
+        self.resume_name = resume_name # Uploaded resume file name
+        self.resume_text = resume_text # Extracted resume text or summary
         self.__secret_notes = "Protected info" # Encapsulated private attribute
     
     def display_details(self): # Implementation of abstract method to show student info
@@ -59,8 +62,10 @@ class Student(Person): # Subclass of Person representing a student
             "person_id": self.person_id, "name": self.name, "email": self.email,
             "contact_number": self.contact_number, "student_id": self.student_id,
             "branch": self.branch, "cgpa": self.cgpa, "skills": list(self.skills),
-            "placement_status": self.placement_status, "password": self.password,
-            "applied_companies": self.applied_companies, "application_statuses": self.application_statuses
+            "languages": list(self.languages), "placement_status": self.placement_status,
+            "password": self.password, "applied_companies": self.applied_companies,
+            "application_statuses": self.application_statuses, "resume_name": self.resume_name,
+            "resume_text": self.resume_text
         } # Skills converted to list for JSON compatibility
     
     @classmethod # Class method to create a Student instance from a dictionary
@@ -181,12 +186,15 @@ class PlacementDrive: # Class representing a specific recruitment event
 
 
 class Interview: # Class representing an interview session
-    def __init__(self, interview_id, student, company, interview_date, status="Scheduled"): # Constructor for Interview
+    def __init__(self, interview_id, student, company, interview_date, status="Scheduled", student_name=None, company_name=None, team_member_name=""): # Constructor for Interview
         self.interview_id = interview_id # Unique identifier for the interview
         self.student = student # ID of the student being interviewed
         self.company = company # ID of the company conducting the interview
         self.interview_date = interview_date # Date of the interview
         self.status = status # Current status (e.g., Scheduled, Completed, Cancelled)
+        self.student_name = student_name
+        self.company_name = company_name
+        self.team_member_name = team_member_name
 
     def schedule_interview(self): # Method to finalize interview scheduling
         pass # Placeholder for scheduling logic

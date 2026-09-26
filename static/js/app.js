@@ -176,10 +176,11 @@ const API = {
 
     // POST request helper
     async post(endpoint, data) {
+        const isFormData = data instanceof FormData;
         const res = await fetch(endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            headers: isFormData ? {} : { 'Content-Type': 'application/json' },
+            body: isFormData ? data : JSON.stringify(data)
         });
         return res.json();
     },
@@ -233,22 +234,60 @@ function selectAuthMode(mode) {
     document.getElementById('auth-message').textContent = '';
 }
 
-function applyRoleUI(role) {
+function getTimeGreeting(date = new Date()) {
+    const hour = date.getHours();
+    if (hour >= 5 && hour < 12) return 'Good morning';
+    if (hour >= 12 && hour < 17) return 'Good afternoon';
+    if (hour >= 17 && hour < 21) return 'Good evening';
+    return 'Good night';
+}
+
+function renderAccountWelcome(role, user) {
+    const header = document.getElementById('account-welcome');
+    const greeting = document.getElementById('account-greeting');
+    const context = document.getElementById('account-context');
+    if (!header || !greeting || !context) return;
+
+    const name = String(user?.name || '').trim();
+    if (!role || !name) {
+        greeting.textContent = '';
+        context.textContent = '';
+        header.classList.add('hidden');
+        return;
+    }
+
+    greeting.textContent = `${getTimeGreeting()}, ${name}`;
+    context.textContent = role === 'admin'
+        ? `${user.designation || 'Admin'} | Admin Portal`
+        : `Student Portal${user.student_id ? ` | Student ID: ${user.student_id}` : ''}`;
+    header.classList.remove('hidden');
+}
+
+function applyRoleUI(role, user) {
     currentUserRole = role;
+    renderAccountWelcome(role, user);
     document.body.classList.toggle('student-mode', role === 'student');
     document.body.classList.toggle('admin-mode', role === 'admin');
     document.querySelectorAll('.nav-link').forEach(link => {
         const section = link.dataset.section;
         const hiddenForStudent = ['admins', 'reports'].includes(section);
-        link.closest('li').classList.toggle('hidden', role === 'student' && hiddenForStudent);
+        const hiddenForAdmin = section === 'student-profile';
+        link.closest('li').classList.toggle('hidden', (role === 'student' && hiddenForStudent) || (role === 'admin' && hiddenForAdmin));
     });
     document.querySelectorAll('.admin-only-control').forEach(button => {
         button.classList.toggle('hidden', role !== 'admin');
     });
+    document.querySelectorAll('.student-only-control').forEach(button => {
+        button.classList.toggle('hidden', role !== 'student');
+    });
+    document.getElementById('student-profile').classList.toggle('hidden', role !== 'student');
     document.querySelectorAll('#eligibility .form-group').forEach(group => {
         if (role === 'student' && group.querySelector('#elig-student')) group.classList.add('hidden');
     });
     document.getElementById('auth-gate').classList.add('hidden');
+    if (role === 'student') {
+        loadStudentProfile();
+    }
 }
 
 function showAuthError(message) {
@@ -268,7 +307,7 @@ async function handleLogin(event) {
             showAuthError(result.message);
             return;
         }
-        applyRoleUI(result.role);
+        applyRoleUI(result.role, result.user);
         await refreshAll();
     } catch (error) {
         showAuthError('The login request could not be completed. Please try again.');
@@ -319,6 +358,7 @@ async function handleRegistration(event) {
 async function logout() {
     await API.post('/api/auth/logout', {});
     currentUserRole = null;
+    renderAccountWelcome(null, null);
     document.body.classList.remove('student-mode', 'admin-mode');
     document.getElementById('auth-gate').classList.remove('hidden');
     selectAuthMode('login');
@@ -369,18 +409,14 @@ async function renderStats() {
  * These are the top placement records for 2025-26
  */
 const EATM_TOP_PLACEMENTS = [
-    { name: "Sumit Pathak", branch: "CSE", company: "Autodesk", package: "39 LPA" },
-    { name: "Varun Gupta", branch: "CSE (AI & ML)", company: "Autodesk", package: "39 LPA" },
-    { name: "Aditya Singh", branch: "CSE (DS)", company: "Eightfold.ai", package: "37.53 LPA" },
-    { name: "Vanshika Pandey", branch: "CSE", company: "AMD", package: "30 LPA" },
-    { name: "Ayush Mani", branch: "CSE (AI & ML)", company: "Juspay", package: "27 LPA" },
-    { name: "Ankush Chauhan", branch: "CSE (AI & ML)", company: "Juspay", package: "21 LPA" },
-    { name: "Himanshu Pandey", branch: "CSE (AI)", company: "Atlan", package: "20 LPA" },
-    { name: "Anmol Srivastava", branch: "CSE", company: "JP Morgan Chase", package: "19.75 LPA" },
-    { name: "Onkar Jha", branch: "ECE", company: "Vance", package: "19 LPA" },
-    { name: "Saurabh Kumar", branch: "CSE (Regional)", company: "Auditorium Works", package: "14 LPA" },
-    { name: "Abhay Kumar", branch: "CSE", company: "Amadeus Lab", package: "12.62 LPA" },
-    { name: "Ayush Rawat", branch: "CSE (AIML)", company: "NatWest", package: "12 LPA" },
+    { name: "Rajib Lochan Pani", branch: "CSE", company: "Road axe", package: "14 LPA" },
+    { name: "Subhalaxmi Jena", branch: "CSE", company: "Infosys", package: "12.5 LPA" },
+    { name: "Sushree Sangita Ray", branch: "CSE", company: "TCS", package: "10.2 LPA" },
+    { name: "Milan Ray", branch: "Mechanical", company: "Tech Mahindra", package: "9.8 LPA" },
+    { name: "Amit Sahoo", branch: "ECE", company: "Capgemini", package: "9.1 LPA" },
+    { name: "Sneha Pattnaik", branch: "IT", company: "Cognizant", package: "8.9 LPA" },
+    { name: "Pritam Mohanty", branch: "CSE", company: "Wipro", package: "8.5 LPA" },
+    { name: "Ritika Nayak", branch: "EEE", company: "Accenture", package: "8.2 LPA" },
 ];
 
 /** Render NIET top placement cards into the dashboard */
@@ -637,6 +673,7 @@ async function renderInterviews() {
             <td>${i.interview_id}</td>
             <td>${i.student_name} (${i.student})</td>
             <td>${i.company_name} (${i.company})</td>
+            <td>${i.team_member_name || 'Not assigned'}</td>
             <td>${i.interview_date}</td>
             <td><span class="data-card-badge badge-scheduled">${i.status}</span></td>
             ${currentUserRole === 'admin' ? `<td class="table-actions"><button type="button" class="btn btn-glass" onclick='openInterviewEdit(${JSON.stringify(i)})'>Edit</button><button type="button" class="btn btn-danger" onclick="deleteInterview('${i.interview_id}')">Delete</button></td>` : ''}
@@ -653,6 +690,7 @@ async function openInterviewEdit(interview) {
     document.getElementById('i-iid').disabled = true;
     document.getElementById('i-student').value = interview.student;
     document.getElementById('i-company').value = interview.company;
+    document.getElementById('i-team-member').value = interview.team_member_name || '';
     document.getElementById('i-date').value = interview.interview_date;
     document.getElementById('i-status').value = interview.status;
 }
@@ -697,7 +735,6 @@ async function populateDropdowns() {
     const students = await API.get('/api/students');
     const companies = await API.get('/api/companies');
 
-    // All student select elements
     const studentSelects = ['elig-student', 'i-student', 'o-student'];
     studentSelects.forEach(id => {
         const el = document.getElementById(id);
@@ -707,7 +744,6 @@ async function populateDropdowns() {
         }
     });
 
-    // All company select elements
     const companySelects = ['elig-company', 'i-company', 'o-company', 'd-company'];
     companySelects.forEach(id => {
         const el = document.getElementById(id);
@@ -716,6 +752,77 @@ async function populateDropdowns() {
                 companies.map(c => `<option value="${c.company_id}">${c.company_name} (${c.company_id})</option>`).join('');
         }
     });
+
+    if (currentUserRole === 'student') {
+        const me = await API.get('/api/auth/me');
+        if (me.authenticated && me.user) {
+            const skills = me.user.skills ? me.user.skills.join(', ') : '';
+            const languages = me.user.languages ? me.user.languages.join(', ') : '';
+            const profileSkills = document.getElementById('profile-skills');
+            const profileLanguages = document.getElementById('profile-languages');
+            if (profileSkills) profileSkills.value = skills;
+            if (profileLanguages) profileLanguages.value = languages;
+            renderSuggestedCompanies(me.user);
+        }
+    }
+}
+
+async function handleStudentProfileSubmit(event) {
+    event.preventDefault();
+    const payload = new FormData();
+    const resume = document.getElementById('profile-resume')?.files?.[0];
+    payload.append('skills', document.getElementById('profile-skills').value);
+    payload.append('languages', document.getElementById('profile-languages').value);
+    if (resume) payload.append('resume', resume);
+
+    const result = await API.post('/api/students/profile', payload);
+    if (result.success) {
+        showToast(result.message, 'success');
+        renderSuggestedCompanies(result.student);
+        document.getElementById('profile-resume-name').textContent = result.student.resume_name || 'No resume uploaded yet';
+    } else {
+        showToast(result.message, 'error');
+    }
+}
+
+function renderSuggestedCompanies(student) {
+    const container = document.getElementById('student-suggestions');
+    if (!container) return;
+
+    const suggestions = student?.suggested_companies || [];
+    if (!suggestions.length) {
+        container.innerHTML = '<div class="empty-state visible">No suggestions yet. Add more skills or upload a resume to improve matches.</div>';
+        return;
+    }
+
+    container.innerHTML = suggestions.map(item => `
+        <div class="suggestion-item">
+            <div>
+                <strong>${item.company_name}</strong><br>
+                <span>${item.job_role}</span>
+            </div>
+            <div class="suggestion-action">
+                <span>${item.package} LPA</span>
+                ${item.has_applied
+                    ? `<span class="data-card-badge badge-scheduled">${item.application_status || 'Applied'}</span>`
+                    : item.eligible
+                        ? `<button type="button" class="btn btn-primary" onclick="handlePlacementApplication('${item.company_id}', this)">Apply</button>`
+                        : `<span class="data-card-badge badge-not-placed">Requires ${item.eligibility_cgpa} CGPA</span>`}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function loadStudentProfile() {
+    const me = await API.get('/api/auth/me');
+    if (!me.authenticated || me.role !== 'student') return;
+    const profileSkills = document.getElementById('profile-skills');
+    const profileLanguages = document.getElementById('profile-languages');
+    if (profileSkills) profileSkills.value = me.user.skills ? me.user.skills.join(', ') : '';
+    if (profileLanguages) profileLanguages.value = me.user.languages ? me.user.languages.join(', ') : '';
+    const resumeName = document.getElementById('profile-resume-name');
+    if (resumeName) resumeName.textContent = me.user.resume_name || 'No resume uploaded yet';
+    renderSuggestedCompanies(me.user);
 }
 
 
@@ -849,6 +956,7 @@ async function handleInterviewSubmit(e) {
         interview_id: document.getElementById('i-iid').value,
         student: document.getElementById('i-student').value,
         company: document.getElementById('i-company').value,
+        team_member_name: document.getElementById('i-team-member').value.trim(),
         interview_date: document.getElementById('i-date').value,
         status: document.getElementById('i-status').value
     };
@@ -888,18 +996,17 @@ async function handleOfferSubmit(e) {
 
 /** Eligibility check (not a modal — inline form) */
 async function checkEligibility() {
-    const studentId = document.getElementById('elig-student').value;
+    const studentId = currentUserRole === 'student' ? null : document.getElementById('elig-student').value;
     const companyId = document.getElementById('elig-company').value;
 
-    if (!studentId || !companyId) {
-        showToast('Please select both student and company', 'error');
+    if ((currentUserRole !== 'student' && !studentId) || !companyId) {
+        showToast(currentUserRole === 'student' ? 'Please select a company' : 'Please select both student and company', 'error');
         return;
     }
 
-    const result = await API.post('/api/eligibility', {
-        student_id: studentId,
-        company_id: companyId
-    });
+    const payload = { company_id: companyId };
+    if (studentId) payload.student_id = studentId;
+    const result = await API.post('/api/eligibility', payload);
 
     const div = document.getElementById('eligibility-result');
     div.classList.remove('hidden', 'eligible', 'not-eligible');
@@ -1286,7 +1393,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const auth = await API.get('/api/auth/me');
     if (auth.authenticated) {
-        applyRoleUI(auth.role);
+        applyRoleUI(auth.role, auth.user);
         await refreshAll();
         return;
     }

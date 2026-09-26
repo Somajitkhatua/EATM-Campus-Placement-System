@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EATM Campus Placement Management System</title>
+    <title>Einstein Academy Placement Portal</title>
     <meta name="description" content="EATM Campus Placement Management System for students, recruiters, and placement administrators.">
+    <meta name="theme-color" content="#0a0a0f">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/einstein-logo.svg') }}?v=2">
 
     <!-- Google Fonts: Outfit (headings) + DM Sans (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +20,10 @@
 
     <section id="auth-gate" class="auth-gate">
         <div class="auth-panel glass-card">
-            <div class="auth-brand">EATM <span>PLACEMENT PORTAL</span></div>
+            <div class="auth-brand">
+                <img src="{{ url_for('static', filename='img/einstein-logo.svg') }}" alt="EATM gear logo" class="auth-brand-logo">
+                <span>EATM <small>PLACEMENT PORTAL</small></span>
+            </div>
             <h1 id="auth-title">Choose your portal</h1>
             <p id="auth-subtitle">Sign in to continue to the placement system.</p>
             <div class="auth-role-tabs">
@@ -86,7 +91,7 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <span class="sidebar-logo">🎓</span>
+                <img src="{{ url_for('static', filename='img/einstein-logo.svg') }}" alt="EATM gear logo" class="sidebar-logo">
                 <span class="sidebar-title">EATM</span>
                 <button type="button" class="btn btn-glass logout-button" onclick="logout()">Log out</button>
             </div>
@@ -107,6 +112,8 @@
                     <span class="nav-icon">📜</span><span class="nav-text">Offers</span></a></li>
                 <li><a href="#eligibility" class="nav-link" data-section="eligibility">
                     <span class="nav-icon">✅</span><span class="nav-text">Eligibility</span></a></li>
+                <li><a href="#student-profile" class="nav-link" data-section="student-profile">
+                    <span class="nav-icon">📄</span><span class="nav-text">Student Profile</span></a></li>
                 <li><a href="#reports" class="nav-link" data-section="reports">
                     <span class="nav-icon">📈</span><span class="nav-text">Reports</span></a></li>
             </ul>
@@ -117,6 +124,12 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
+            <header id="account-welcome" class="account-welcome hidden" aria-live="polite">
+                <div>
+                    <p id="account-greeting" class="account-greeting"></p>
+                    <p id="account-context" class="account-context"></p>
+                </div>
+            </header>
 
             <!-- ── DASHBOARD ──────────────────── -->
             <section id="dashboard" class="content-section">
@@ -158,6 +171,12 @@
                     <div class="cards-grid" id="top-placements-grid">
                         <!-- Rendered by JS -->
                     </div>
+                </div>
+
+                <div class="quick-actions-row">
+                    <button class="btn btn-primary" onclick="scrollToSection('eligibility')">Check Eligibility</button>
+                    <button class="btn btn-glass student-only-control" onclick="scrollToSection('student-profile')">Update Profile</button>
+                    <button class="btn btn-glass student-only-control" onclick="scrollToSection('student-profile')">Suggested Companies</button>
                 </div>
 
                 <!-- System Live Stats -->
@@ -227,7 +246,7 @@
                 <div class="table-wrapper">
                     <table class="data-table" id="interviews-table">
                         <thead><tr>
-                            <th>Interview ID</th><th>Student</th><th>Company</th><th>Date</th><th>Status</th><th>Actions</th>
+                            <th>Interview ID</th><th>Student</th><th>Company</th><th>Team Member</th><th>Date</th><th>Status</th><th>Actions</th>
                         </tr></thead>
                         <tbody id="interviews-tbody"></tbody>
                     </table>
@@ -265,6 +284,40 @@
                     </div>
                     <button class="btn btn-primary" onclick="checkEligibility()">Check Eligibility</button>
                     <div id="eligibility-result" class="elig-result hidden"></div>
+                </div>
+            </section>
+
+            <!-- ── STUDENT PROFILE & RESUME ────────────────────── -->
+            <section id="student-profile" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Student Resume & Profile</h2>
+                    <p class="section-desc">Upload your resume and update your skills or languages to get suggested companies.</p>
+                </div>
+                <div class="profile-shell glass-card">
+                    <form id="student-profile-form" onsubmit="handleStudentProfileSubmit(event)">
+                        <div class="profile-grid">
+                            <div class="form-group">
+                                <label>Skills</label>
+                                <input type="text" id="profile-skills" class="form-input" placeholder="Python, SQL, Java, React">
+                            </div>
+                            <div class="form-group">
+                                <label>Languages</label>
+                                <input type="text" id="profile-languages" class="form-input" placeholder="English, Hindi, Odia">
+                            </div>
+                            <div class="form-group profile-file-field">
+                                <label>Resume (PDF/TXT)</label>
+                                <input type="file" id="profile-resume" class="form-input" accept=".pdf,.txt">
+                                <span id="profile-resume-name" class="profile-resume-name">No resume uploaded yet</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button type="submit" class="btn btn-primary">Save Profile &amp; Refresh Suggestions</button>
+                        </div>
+                    </form>
+                    <div class="suggestion-panel">
+                        <h3>Suggested Companies</h3>
+                        <div id="student-suggestions" class="suggestion-list"></div>
+                    </div>
                 </div>
             </section>
 
@@ -424,6 +477,7 @@
                     <div class="form-group"><label>Interview ID</label><input type="text" id="i-iid" class="form-input" required></div>
                     <div class="form-group"><label>Student</label><select id="i-student" class="form-input" required></select></div>
                     <div class="form-group"><label>Company</label><select id="i-company" class="form-input" required></select></div>
+                    <div class="form-group"><label>Team Member Name</label><input type="text" id="i-team-member" class="form-input" placeholder="Enter a team member name"></div>
                     <div class="form-group"><label>Date</label><input type="date" id="i-date" class="form-input" required></div>
                     <div class="form-group"><label>Status</label><select id="i-status" class="form-input"><option>Scheduled</option><option>Completed</option><option>Cancelled</option></select></div>
                 </div>

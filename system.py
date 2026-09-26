@@ -163,6 +163,7 @@ class CampusPlacementSystem: # Main class to manage the placement system
         interview.company = company_id
         interview.interview_date = interview_data.get('interview_date', interview.interview_date)
         interview.status = interview_data.get('status', interview.status)
+        interview.team_member_name = interview_data.get('team_member_name', interview.team_member_name)
 
     def delete_interview(self, interview_id):
         original_count = len(self.interviews)
